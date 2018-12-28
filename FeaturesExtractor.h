@@ -5,11 +5,17 @@
 #ifndef LOGO_DETECTOR_FEATURESEXTRACTOR_H
 #define LOGO_DETECTOR_FEATURESEXTRACTOR_H
 
+#include "DetectedObjects.h"
 
 class FeaturesExtractor {
 
 public:
     FeaturesExtractor();
+
+    void extractObjectsFeatures(cv::Mat &image, DetectedObjects *objects);
+
+private:
+    void extractFeatures(cv::Mat&, std::vector<ObjectFeatures*>&);
 };
 
 

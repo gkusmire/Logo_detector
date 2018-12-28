@@ -7,27 +7,12 @@
 Preprocessor::Preprocessor() {
 }
 
-void Preprocessor::doPreprocessing(cv::Mat &image) {
-    extractColorAreas(image);
+void Preprocessor::doPreprocessing(cv::Mat &image, DetectedObjects* objects) {
+    extractColorAreas(image, objects);
 }
 
-void Preprocessor::extractColorAreas(cv::Mat &image) {
+void Preprocessor::extractColorAreas(cv::Mat &image, DetectedObjects* objects) {
     ColorAreasFinder* finder = new ColorAreasFinder();
-    finder->extractColorAreas(image);
-    redColor = finder->getRedColorVector();
-    blueColor = finder->getBlueColorVector();
-    whiteColor = finder->getWhiteColorVector();
+    finder->extractColorAreas(image, objects);
     delete finder;
-}
-
-std::vector<cv::Vec3b> Preprocessor::getRedColorVector() {
-    return redColor;
-}
-
-std::vector<cv::Vec3b> Preprocessor::getWhiteColorVector() {
-    return whiteColor;
-}
-
-std::vector<cv::Vec3b> Preprocessor::getBlueColorVector() {
-    return blueColor;
 }

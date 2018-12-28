@@ -10,7 +10,7 @@ ColorAreasFinder::ColorAreasFinder() {
     darkColor = {0,0,0};
 }
 
-void ColorAreasFinder::extractColorAreas(cv::Mat &image) {
+void ColorAreasFinder::extractColorAreas(cv::Mat &image, DetectedObjects* objects) {
     cv::Mat_<cv::Vec3b> _I = image;
     Color color;
     cv::Vec3b colorVal;
@@ -27,7 +27,7 @@ void ColorAreasFinder::extractColorAreas(cv::Mat &image) {
                     colorVal = darkColor;
                 } else {
                     colorVal = getColorVal();
-                    addColorVal(color, colorVal);
+                    addColorVal(color, colorVal, objects);
                 }
                 findColorArea(color, colorVal, i, j, flagTable, _I);
             }
@@ -36,18 +36,6 @@ void ColorAreasFinder::extractColorAreas(cv::Mat &image) {
         delete[] flagTable[i];
     delete[] flagTable;
     image = _I;
-}
-
-std::vector<cv::Vec3b> ColorAreasFinder::getRedColorVector() {
-    return redColorVector;
-}
-
-std::vector<cv::Vec3b> ColorAreasFinder::getWhiteColorVector() {
-    return whiteColorVector;
-}
-
-std::vector<cv::Vec3b> ColorAreasFinder::getBlueColorVector() {
-    return blueColorVector;
 }
 
 Color ColorAreasFinder::getPixelColor(cv::Vec3b &pixel) {
@@ -108,16 +96,16 @@ cv::Vec3b ColorAreasFinder::getColorVal() {
     return actualColor;
 }
 
-void ColorAreasFinder::addColorVal(Color color, cv::Vec3b& colorVal) {
+void ColorAreasFinder::addColorVal(Color color, cv::Vec3b& colorVal, DetectedObjects* objects) {
     switch(color) {
         case Color::RED:
-            redColorVector.push_back(colorVal);
+            objects->addRedObject(new ObjectFeatures(colorVal));
             break;
         case Color::WHITE:
-            whiteColorVector.push_back(colorVal);
+            objects->addWhiteObject(new ObjectFeatures(colorVal));
             break;
         case Color::BLUE:
-            blueColorVector.push_back(colorVal);
+            objects->addBlueObject(new ObjectFeatures(colorVal));
             break;
         default:
             return;

@@ -7,25 +7,19 @@
 #include<iostream>
 #include <opencv2/core/mat.hpp>
 #include"ColorAreasFinder.h"
+#include "DetectedObjects.h"
 
 class Preprocessor {
 
 public:
     Preprocessor();
-    void doPreprocessing(cv::Mat&);
-    std::vector<cv::Vec3b> getRedColorVector();
-    std::vector<cv::Vec3b> getWhiteColorVector();
-    std::vector<cv::Vec3b> getBlueColorVector();
+    void doPreprocessing(cv::Mat&, DetectedObjects*);
 
 private:
-    void extractColorAreas(cv::Mat&);
+    void extractColorAreas(cv::Mat&, DetectedObjects*);
     bool isRed(cv::Vec3b);
     bool isWhite(cv::Vec3b);
     bool isBlue(cv::Vec3b);
-
-    std::vector<cv::Vec3b> redColor;
-    std::vector<cv::Vec3b> whiteColor;
-    std::vector<cv::Vec3b> blueColor;
 
     Color getPixelColor(cv::Vec3b &vec);
 };
