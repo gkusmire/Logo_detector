@@ -16,6 +16,12 @@ public:
 
 private:
     void extractFeatures(cv::Mat&, std::vector<ObjectFeatures*>&);
+    double computeW3(double, double);
+    double computeObjectCircuit(cv::Mat&, cv::Vec3b&);
+    double computeObjectArea(cv::Mat&, cv::Vec3b&);
+    double getM(const cv::Mat&, const cv::Vec3b&, int, int);
+    double computeM7(cv::Mat&, cv::Vec3b&);
+    double computeM3(cv::Mat&, cv::Vec3b&);
 };
 
 

@@ -8,6 +8,7 @@
 #include <opencv2/core/mat.hpp>
 #include"ColorAreasFinder.h"
 #include "DetectedObjects.h"
+#include "FiltrationMaker.h"
 
 class Preprocessor {
 
@@ -21,7 +22,13 @@ private:
     bool isWhite(cv::Vec3b);
     bool isBlue(cv::Vec3b);
 
+    void doFiltering(cv::Mat&);
     Color getPixelColor(cv::Vec3b &vec);
+    int highPassFilter[5][5] = {{0,0,0,0,0},
+                                {0,0,-2,0,0},
+                                {0,-2,11,-2,0},
+                                {0,0,-2,0,0},
+                                {0,0,0,0,0}};
 };
 
 

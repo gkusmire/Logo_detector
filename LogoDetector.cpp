@@ -22,15 +22,14 @@ void LogoDetector::showLogos() {
 
 void LogoDetector::detectLogos() {
     doImagePreprocessing();
-    extractFeatures();
+    //extractFeatures();
 //    analyzeFeatures();
 }
 
 void LogoDetector::doImagePreprocessing() {
+
     Preprocessor* preprocessor = new Preprocessor();
-
     preprocessor->doPreprocessing(image, objects);
-
     delete preprocessor;
 }
 
