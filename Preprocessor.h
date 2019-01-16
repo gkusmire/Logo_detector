@@ -24,11 +24,18 @@ private:
 
     void doFiltering(cv::Mat&);
     Color getPixelColor(cv::Vec3b &vec);
+
     int highPassFilter[5][5] = {{0,0,0,0,0},
                                 {0,0,-2,0,0},
                                 {0,-2,11,-2,0},
                                 {0,0,-2,0,0},
                                 {0,0,0,0,0}};
+
+//    int highPassFilter[5][5] = {{0,0,0,0,0},
+//                                {0,0,0,0,0},
+//                                {0,0,0,0,0},
+//                                {0,0,0,0,0},
+//                                {0,0,0,0,0}};
 };
 
 

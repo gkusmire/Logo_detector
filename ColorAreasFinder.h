@@ -25,9 +25,10 @@ private:
     cv::Vec3b getColorVal();
     void findColorArea(Color, cv::Vec3b, int, int, bool**, cv::Mat_<cv::Vec3b>&);
 
-    void addColorVal(Color, cv::Vec3b&, DetectedObjects*);
+    void addColorVal(Color, cv::Vec3b, DetectedObjects*);
     cv::Vec3b actualColor;
     cv::Vec3b darkColor;
+    cv::Vec3b whiteColor;
 };
 
 

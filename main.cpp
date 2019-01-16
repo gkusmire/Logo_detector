@@ -2,7 +2,7 @@
 #include "LogoDetector.h"
 
 int main() {
-    std::string pictureName = "elipsa1.dib";
+    std::string pictureName = "bbb.png";
     LogoDetector* detector;
 
 //    std::cout << "Podaj proszę nazwę obrazu: ";

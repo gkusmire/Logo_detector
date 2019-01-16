@@ -10,17 +10,23 @@ FeaturesExtractor::FeaturesExtractor() {}
 void FeaturesExtractor::extractObjectsFeatures(cv::Mat &image, DetectedObjects *objects) {
     extractFeatures(image, objects->getRedColorObjects());
     extractFeatures(image, objects->getBlueColorObjects());
-    extractFeatures(image, objects->getWhiteColorObjects());
 }
 
 void FeaturesExtractor::extractFeatures(cv::Mat &image, std::vector<ObjectFeatures *> &objects) {
 
-    for(auto obj : objects) {
-        obj->setArea(computeObjectArea(image, obj->getColor()));
-        obj->setCircus(computeObjectCircuit(image, obj->getColor()));
-        obj->setW3(computeW3(obj->getArea(), obj->getCircus()));
-        obj->setM3(computeM3(image, obj->getColor()));
-        obj->setM7(computeM7(image, obj->getColor()));
+    for(auto obj = objects.begin(); obj != objects.end();) {
+        (*obj)->setArea(computeObjectArea(image, (*obj)->getColor()));
+        if((*obj)->getArea() > 10) {
+            (*obj)->setCircus(computeObjectCircuit(image, (*obj)->getColor()));
+            (*obj)->setW3(computeW3((*obj)->getArea(), (*obj)->getCircus()));
+            (*obj)->setM3(computeM3(image, (*obj)->getColor()));
+            (*obj)->setM7(computeM7(image, (*obj)->getColor()));
+            setObjectDimension(*obj, image);
+            ++obj;
+        } else {
+            delete (*obj);
+            objects.erase(obj);
+        }
     }
 }
 
@@ -30,18 +36,19 @@ double FeaturesExtractor::computeW3(double area, double circuit) {
 
 double FeaturesExtractor::computeObjectCircuit(cv::Mat &image, cv::Vec3b &color) {
 
-    cv::Vec3b marker_color = {10,10,10};
-    cv::Vec3b backgroundColor = {0,0,0};
+    cv::Vec3b marker_color = {255,255,254};
+    cv::Vec3b blackColor = {0,255,0};
+    cv::Vec3b whiteColor = {255,255,255};
     cv::Mat_<cv::Vec3b> _I = image;
     int x[] = {-1,-1,-1,0,0,1,1,1};
     int y[] = {1,0,-1,1,-1,1,0,-1};
     double counter = 0;
 
-    for (int i = 0; i < _I.cols; ++i)
-        for (int j = 0; j < _I.rows; ++j) {
+    for (int i = 0; i < _I.rows; ++i)
+        for (int j = 0; j < _I.cols; ++j) {
             if(_I(i,j) == color)
                 for(int m=0; m<8; ++m) {
-                    if(_I(i+x[m],j+y[m]) == backgroundColor && _I(i,j) == color) {
+                    if((_I(i+x[m],j+y[m]) == blackColor || _I(i+x[m],j+y[m]) == whiteColor) && _I(i,j) == color) {
                         _I(i + x[m], j + y[m]) = marker_color;
                         ++counter;
                     }
@@ -54,8 +61,8 @@ double FeaturesExtractor::computeObjectArea(cv::Mat &image, cv::Vec3b &color) {
 
     cv::Mat_<cv::Vec3b> _I = image;
     double counter = 0;
-    for(int i=0; i<image.cols; ++i)
-        for(int j=0; j<image.rows; ++j) {
+    for(int i=0; i<image.rows; ++i)
+        for(int j=0; j<image.cols; ++j) {
             if(_I(i,j)==color)
                 ++counter;
         }
@@ -117,3 +124,29 @@ double FeaturesExtractor::computeM3(cv::Mat &image, cv::Vec3b& color) {
     return pow(M30-3*M12,2) + pow(3*M21-M03,2)/pow(m00,5);
 }
 
+void FeaturesExtractor::setObjectDimension(ObjectFeatures* obj, cv::Mat& image) {
+
+    cv::Mat_<cv::Vec3b> _I = image;
+    uint minX = image.rows;
+    uint minY = image.cols;
+    uint maxX = 0;
+    uint maxY = 0;
+
+    for (int i = 0; i < image.rows; ++i)
+        for (int j = 0; j < image.cols; ++j)
+            if (_I(i, j) == obj->getColor()) {
+                if(i<minX)
+                    minX = i;
+                if(i>maxX)
+                    maxX = i;
+                if(j<minY)
+                    minY = j;
+                if(j>maxY)
+                    maxY = j;
+            }
+
+    obj->setMinX(minX);
+    obj->setMinY(minY);
+    obj->setMaxX(maxX);
+    obj->setMaxY(maxY);
+}

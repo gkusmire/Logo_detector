@@ -13,6 +13,4 @@ DetectedObjects::~DetectedObjects() {
     for(auto x : blueColorObjects)
         delete x;
 
-    for(auto x : whiteColorObjects)
-        delete x;
 }

@@ -10,7 +10,7 @@
 #include "FeaturesExtractor.h"
 #include "ObjectFeatures.h"
 #include "DetectedObjects.h"
-
+#include "ObjectsAnalyzer.h"
 
 class LogoDetector {
 
@@ -23,7 +23,7 @@ public:
 private:
     void doImagePreprocessing();
     void extractFeatures();
-    void extractFeatures(Color, FeaturesExtractor*, ObjectFeatures*, std::vector<cv::Vec3b>);
+    void analyzeFeatures();
 
     PictureReader* pictureReader;
     cv::Mat image;

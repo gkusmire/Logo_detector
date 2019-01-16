@@ -22,6 +22,7 @@ private:
     double getM(const cv::Mat&, const cv::Vec3b&, int, int);
     double computeM7(cv::Mat&, cv::Vec3b&);
     double computeM3(cv::Mat&, cv::Vec3b&);
+    void setObjectDimension(ObjectFeatures*, cv::Mat&);
 };
 
 

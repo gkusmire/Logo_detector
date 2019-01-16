@@ -17,8 +17,8 @@ void FiltrationMaker::doFiltration(cv::Mat &image, int (*filter)[5]) {
 
     filterSum = getFilterElementsSum(filter);
 
-    for(int i=2; i<image.cols-2; ++i)
-        for(int j=2; j<image.rows-2; ++j) {
+    for(int i=2; i<image.rows-2; ++i)
+        for(int j=2; j<image.cols-2; ++j) {
             pixelColor = getPixelColorAfterFiltering(_I, filter, i, j, filterSum);
             filtered(i,j) = pixelColor;
         }
