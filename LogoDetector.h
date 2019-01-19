@@ -18,12 +18,13 @@ public:
     LogoDetector(std::string&);
     ~LogoDetector();
     void detectLogos();
-    void showLogos();
 
 private:
+    void showLogos(RectanglesList* );
+    void showOriginalPicture();
     void doImagePreprocessing();
     void extractFeatures();
-    void analyzeFeatures();
+    RectanglesList* analyzeFeatures();
 
     PictureReader* pictureReader;
     cv::Mat image;

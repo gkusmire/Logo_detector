@@ -7,13 +7,21 @@
 #include<iostream>
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
+#include "RectanglesList.h"
+#include "RectanglesExtractor.h"
 
 class PictureReader {
 
 public:
     PictureReader();
-    void showPicture(cv::Mat &image, std::string &name);
     cv::Mat readPicture(std::string&);
+
+    void showOriginalPicture(std::string);
+
+    void showPictureRects(std::string, RectanglesList*);
+
+private:
+    std::string pictureName;
 };
 
 

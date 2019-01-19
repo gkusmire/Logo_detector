@@ -5,22 +5,26 @@
 #include "LogoDetector.h"
 
 LogoDetector::LogoDetector(std::string& pictureName) {
+
     this->pictureReader = new PictureReader();
     this->image = pictureReader->readPicture(pictureName);
     objects = new DetectedObjects();
 }
 
 LogoDetector::~LogoDetector() {
+
     delete pictureReader;
     delete objects;
 }
 
-void LogoDetector::showLogos() {
-    std::string a = "Znalezione znaki Pepsi";
-    pictureReader->showPicture(image, a);
+void LogoDetector::showLogos(RectanglesList* rects) {
+
+    std::string a = "Znalezione loga Pepsi";
+    pictureReader->showPictureRects(a, rects);
 }
 
 void LogoDetector::detectLogos() {
+
     doImagePreprocessing();
     extractFeatures();
     std::cout<<"Czerwone: "<<std::endl;
@@ -41,7 +45,10 @@ void LogoDetector::detectLogos() {
 
     }
 
-    analyzeFeatures();
+    RectanglesList* rects = analyzeFeatures();
+    showOriginalPicture();
+    showLogos(rects);
+
 }
 
 void LogoDetector::doImagePreprocessing() {
@@ -52,14 +59,24 @@ void LogoDetector::doImagePreprocessing() {
 }
 
 void LogoDetector::extractFeatures() {
+
     FeaturesExtractor* featuresExtractor = new FeaturesExtractor();
     featuresExtractor->extractObjectsFeatures(image, objects);
     delete featuresExtractor;
 }
 
-void LogoDetector::analyzeFeatures() {
+RectanglesList* LogoDetector::analyzeFeatures() {
 
+    RectanglesList* rects;
     ObjectsAnalyzer* analyzer = new ObjectsAnalyzer();
-    analyzer->analyzeObjects(this->objects);
+    rects = analyzer->analyzeObjects(this->objects);
     delete analyzer;
+
+    return rects;
+}
+
+void LogoDetector::showOriginalPicture() {
+
+    std::string a = "Oryginalny obraz";
+    pictureReader->showOriginalPicture(a);
 }

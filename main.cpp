@@ -10,7 +10,6 @@ int main() {
 
     detector = new LogoDetector(pictureName);
     detector->detectLogos();
-    detector->showLogos();
     cv::waitKey(-1);
 
     delete detector;
